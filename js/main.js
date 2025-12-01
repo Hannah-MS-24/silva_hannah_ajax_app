@@ -8,7 +8,6 @@
   const materialError = document.querySelector("#material-error");
   const infoboxError = document.querySelector("#infobox-error");
 
- 
   const materialListData = [
     {
       heading: "Precision-Crafted Polymers",
@@ -32,9 +31,7 @@
     }
   ];
 
-
   // LOAD INFO BOXES (HOTSPOTS)
-
   function loadInfoBoxes() {
     fetch("https://swiftpixel.com/earbud/api/infoboxes") 
       .then(response => {
@@ -48,6 +45,7 @@
 
           const annotation = hotspot.querySelector(".HotspotAnnotation");
 
+         
           const titleElement = document.createElement('h2');
           titleElement.textContent = infoBox.heading;
 
@@ -56,6 +54,11 @@
 
           annotation.appendChild(titleElement);
           annotation.appendChild(textElement);
+
+          if (window.innerWidth >= 768) {
+            annotation.style.visibility = "visible";
+            annotation.style.opacity = "1";
+          }
         });
       })
       .catch(() => {
@@ -63,9 +66,7 @@
       });
   }
 
-
   // LOAD MATERIALS
-
   function loadMaterialInfo() {
     showLoader();
 
@@ -104,8 +105,6 @@
     materialLoader.classList.add("hidden");
   }
 
- 
-  // HOTSPOT ANNOTATION ANIMATION
 
   function showInfo() {
     const annotation = this.querySelector(".HotspotAnnotation");
@@ -122,7 +121,7 @@
     h.addEventListener("mouseleave", hideInfo);
   });
 
-
+  // INIT
   loadInfoBoxes();
   loadMaterialInfo();
 

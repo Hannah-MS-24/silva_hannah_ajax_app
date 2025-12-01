@@ -1,147 +1,124 @@
-/* MODEL-VIEWER */
 
-model-viewer {
-  width: auto;
-  max-width: 1200px;
-  height: 700px;
-  background-color: #efefef;
-  margin: 0 auto;
-}
+// Global Styles
 
-model-viewer::part(default-progress-bar) {
-  height: 30px;
-  background-color: #E89B36;
-}
-
-/* HOTSPOTS */
-
-.Hotspot {
-  background: url(../images/hotspot.svg) center no-repeat;
-  border: 0;
-  width: 45px;
-  height: 38px;
-  transition: all 1s ease-in-out;
-  display: none; 
-}
-
-.Hotspot:not([data-visible]) {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* HOTSPOT ANNOTATION */
-
-.HotspotAnnotation {
-  visibility: hidden;
+body {
   background: #fff;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-  color: rgba(0, 0, 0, 0.8);
-  display: block;
-  font-family: Futura, Helvetica Neue, sans-serif;
-  font-size: 18px;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h2 {
+  margin-top: 40px;
+  font-size: 24px;
   font-weight: 700;
-  left: calc(100% + 1em);
-  max-width: 300px;
-  overflow-wrap: break-word;
-  padding: 0.5em 1em;
-  position: absolute;
-  top: 50%;
-  width: max-content;
-  text-align: left;
 }
 
-.HotspotAnnotation p {
-  color: #333;
-  line-height: 22px;
-  font-weight: 300;
+.error {
+  color: darkred;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 10px;
 }
 
-.HotspotAnnotation h2 {
-  font-size: 18px;
-  margin-bottom: 5px;
+.error.hidden,
+.loader.hidden {
+  display: none;
 }
 
-.HotspotAnnotation img {
-  max-width: 250px;
-}
 
-/* ANIMATIONS (Default) */
+// Loader
 
-@keyframes circle {
-  from {
-    transform: translateX(-50%) rotate(0deg) translateX(50px) rotate(0deg);
-  }
-  to {
-    transform: translateX(-50%) rotate(360deg) translateX(50px) rotate(-360deg);
-  }
-}
-
-@keyframes elongate {
-  from {
-    transform: translateX(100px);
-  }
-  to {
-    transform: translateX(-100px);
-  }
-}
-
-/* LOADER */
-
-#loader {
-  width: 60px;
-  height: 60px;
-  margin: 30px auto;
+.loader {
+  border: 6px solid #ddd;
+  border-top: 6px solid black;
   border-radius: 50%;
-  border: 6px solid #ccc;
-  border-top-color: #45a3ff;
+  width: 40px;
+  height: 40px;
+  margin: 15px auto;
   animation: spin 0.8s linear infinite;
-  display: none; 
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
-#error-message {
-  display: none;
-  text-align: center;
-  margin-top: 20px;
-  color: red;
-  font-size: 1.2rem;
+
+// Materials Styles
+
+.material-item {
+  background: #fafafa;
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.material-heading {
+  font-size: 20px;
   font-weight: 600;
 }
 
-/* MEDIA QUERIES */
+.material-description {
+  font-size: 16px;
+  color: #444;
+  line-height: 1.4;
+}
 
-/* TABLET AND ABOVE */
-@media screen and (min-width: 768px) {
-  .Hotspot {
-    display: block;
+// Hotspot Styles
+.Hotspot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: black;
+  opacity: 0.8;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.HotspotAnnotation {
+  position: absolute;
+  top: 30px;
+  left: -40px;
+  width: 160px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .25s ease;
+}
+
+@media (min-width: 768px) {
+  .Hotspot:hover .HotspotAnnotation {
+    opacity: 1;
+    visibility: visible;
   }
 }
 
-/* Mobile: show static image, hide 3D model */
-.model-static {
-  display: block;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
+// Hide hotspots on mobile
+@media (max-width: 767px) {
+  .Hotspot {
+    display: none !important;
+  }
 }
 
-model-viewer {
+#model-section {
   display: none;
 }
 
-/* Tablet and above: hide static image, show 3D model */
-@media screen and (min-width: 768px) {
-  .model-static {
-    display: none;
+#static-image-section {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  #model-section {
+    display: block;
   }
 
-  model-viewer {
-    display: block;
+  #static-image-section {
+    display: none;
   }
 }

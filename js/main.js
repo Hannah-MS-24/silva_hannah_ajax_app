@@ -3,6 +3,8 @@
   const hotspots = document.querySelectorAll(".Hotspot");
   const materialTemplate = document.querySelector("#material-template");
   const materialList = document.querySelector("#material-list");
+  const loader = document.querySelector("#loader");
+  const errorMessage = document.querySelector("#error-message");
 
   const materialListData = [
     {
@@ -34,12 +36,9 @@
 
   //functions
   function loadInfoBoxes() {
-    //make AJAX call here
     fetch("https://swiftpixel.com/earbud/api/infoboxes")
       .then((response) => response.json())
       .then((infoBoxes) => {
-        console.log(infoBoxes);
-
         infoBoxes.forEach((infoBox, index) => {
           let selected = document.querySelector(`#hotspot-${index + 1}`);
 
@@ -54,19 +53,15 @@
         });
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Failed to load infoBoxes:", error);
       });
   }
 
-  loadInfoBoxes();
-
   function loadMaterialInfo() {
-    const loader = document.querySelector("#loader");
-    const errorMessage = document.querySelector("#error-message");
-
-    //Show loader and hide error.
+    //Show loader, hide list and error initially
     loader.style.display = "block";
     errorMessage.style.display = "none";
+    materialList.style.display = "none";
 
     fetch("https://swiftpixel.com/earbud/api/materials")
       .then((response) => {
@@ -74,7 +69,7 @@
         return response.json();
       })
       .then((materials) => {
-        materialList.innerHTML = ""; // Clear the list before it becomes popular.
+        materialList.innerHTML = ""; // Clear previous content
 
         materials.forEach((material) => {
           const clone = materialTemplate.content.cloneNode(true);
@@ -89,6 +84,9 @@
 
           materialList.appendChild(clone);
         });
+
+        //Show list after content is loaded
+        materialList.style.display = "block";
       })
       .catch((error) => {
         console.error("Failed to load materials:", error);
@@ -98,8 +96,6 @@
         loader.style.display = "none";
       });
   }
-
-  loadMaterialInfo();
 
   function showInfo() {
     let selected = document.querySelector(`#${this.slot}`);
@@ -116,4 +112,8 @@
     hotspot.addEventListener("mouseenter", showInfo);
     hotspot.addEventListener("mouseleave", hideInfo);
   });
+
+  //Load functions
+  loadInfoBoxes();
+  loadMaterialInfo();
 })();

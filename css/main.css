@@ -23,7 +23,7 @@ p {
   font-size: 16px;
 }
 
-/* ========== RESET / BASE STYLES ========== */
+/* GLOBAL */
 body {
   margin: 0;
   padding: 0;
@@ -35,14 +35,13 @@ body {
   display: none !important;
 }
 
-/* ========== LAYOUT MAIN ========== */
 #app {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
 
-/* ========== STATIC IMAGE SECTION (MOBILE DEFAULT) ========== */
+/* STATIC IMAGE SECTION (MOBILE DEFAULT) */
 #static-image-section {
   width: 100%;
   display: block !important;
@@ -53,44 +52,80 @@ body {
   max-width: 600px;
 }
 
-/* ========== MODEL VIEWER SECTION ========== */
+/* MODEL VIEWER SECTION */
 #model-section {
   display: none !important;
   width: 100%;
   margin-top: 20px;
 }
-#model-section model-viewer {
-  width: 100%;
-  height: 500px;
-  background: #e0e0e0;
+
+model-viewer {
+  width: auto;
+  max-width: 1200px;
+  height: 700px;
+  background-color: #efefef;
+  margin: 0 auto;
 }
 
-/* ========== HOTSPOTS ========== */
-.Hotspot {
-  background-color: #ffffff;
-  border: 2px solid #000;
-  border-radius: 50%;
-  padding: 6px;
-  cursor: pointer;
-  position: absolute;
-  z-index: 10;
+model-viewer::part(default-progress-bar) {
+  height: 30px;
+  background-color: #E89B36;
 }
-.Hotspot .HotspotAnnotation {
+
+/* HOTSPOTS */
+.Hotspot {
+  background: url(../images/hotspot.svg) center no-repeat;
+  border: 0px;
+  width: 45px;
+  height: 38px;
+  transition: all 1s ease-in-out;
+  display: none;
+}
+
+.Hotspot:not([data-visible]) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.HotspotAnnotation {
   visibility: hidden;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  color: rgba(0, 0, 0, 0.8);
+  display: block;
+  font-family: Futura, Helvetica Neue, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  left: calc(100% + 1em);
+  max-width: 300px;
+  overflow-wrap: break-word;
+  padding: 0.5em 1em;
+  position: absolute;
+  top: 50%;
+  width: -moz-max-content;
+  width: max-content;
+  text-align: left;
   opacity: 0;
   transition: opacity 0.2s ease;
-  background: #000;
-  color: #fff;
-  padding: 6px 8px;
-  border-radius: 6px;
-  position: absolute;
-  top: -40px;
-  left: 10px;
-  white-space: nowrap;
-  font-size: 14px;
 }
 
-/* ========== LOADING SPINNER ========== */
+.HotspotAnnotation p {
+  color: #333;
+  line-height: 22px;
+  font-weight: 300;
+}
+
+.HotspotAnnotation h2 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.HotspotAnnotation img {
+  max-width: 250px;
+}
+
+/* LOADING SPINNER */
 #loading {
   display: none;
   width: 40px;
@@ -107,7 +142,7 @@ body {
     transform: rotate(360deg);
   }
 }
-/* ========== ERROR MESSAGE BOX ========== */
+/* ERROR BOXES */
 #error-message,
 #material-error {
   padding: 12px;
@@ -119,7 +154,7 @@ body {
   border: 1px solid #f5c6cb;
 }
 
-/* ========== MATERIAL CARD FROM TEMPLATE ========== */
+/* MATERIAL CARD */
 .material-card {
   background: #fff;
   padding: 15px;
@@ -131,28 +166,39 @@ body {
   margin-bottom: 8px;
 }
 
-/* ===========================================================
-   RESPONSIVE BEHAVIOR
-   =========================================================== */
-/* ========== MOBILE: HIDE HOTSPOTS ========== */
+@keyframes circle {
+  from {
+    transform: translateX(-50%) rotate(0deg) translateX(50px) rotate(0deg);
+  }
+  to {
+    transform: translateX(-50%) rotate(360deg) translateX(50px) rotate(-360deg);
+  }
+}
+@keyframes elongate {
+  from {
+    transform: translateX(100px);
+  }
+  to {
+    transform: translateX(-100px);
+  }
+}
 @media (max-width: 767px) {
   .Hotspot {
     display: none !important;
   }
 }
-/* ========== TABLET & DESKTOP ========== */
 @media (min-width: 768px) {
-  /* Show 3D model */
   #model-section {
     display: block !important;
   }
-  /* Hide static image */
   #static-image-section {
     display: none !important;
   }
-  /* Desktop hotspot annotations */
+  .Hotspot {
+    display: block !important;
+  }
   .Hotspot:hover .HotspotAnnotation {
-    opacity: 1;
     visibility: visible;
+    opacity: 1;
   }
 }/*# sourceMappingURL=main.css.map */

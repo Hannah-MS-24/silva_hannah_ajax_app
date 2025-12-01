@@ -1,5 +1,7 @@
 # 🎧 EarBuds 3D Model & Material Viewer
 
+![Earbuds Static](images/poster.jpeg)
+
 - Interactive 3D earbuds model with hotspots and dynamic materials list, fully responsive and fetched from an API.
 
 # ⚙️ Installation

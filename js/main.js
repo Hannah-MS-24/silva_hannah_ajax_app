@@ -1,100 +1,104 @@
 (() => {
-
   //variables
   const hotspots = document.querySelectorAll(".Hotspot");
   const materialTemplate = document.querySelector("#material-template");
   const materialList = document.querySelector("#material-list");
 
-  //This information needs to be removed then pulled with an AJAX Call using the Fetch API
-  //this is the api url https://swiftpixel.com/earbud/api/infoboxes"
-
-
-  //This information needs to be removed then pulled with an AJAX Call using the Fetch API
-
-
   const materialListData = [
     {
       heading: "Precision-Crafted Polymers",
-      description: "Our earbuds are meticulously molded from high-quality plastics, ensuring a blend of elegance, comfort, and resilience that's second to none."
+      description:
+        "Our earbuds are meticulously molded from high-quality plastics, ensuring a blend of elegance, comfort, and resilience that's second to none.",
     },
     {
       heading: "Luxurious Silicone Harmony",
-      description: "Our uniquely engineered ear tips are cocooned in plush silicone, delivering an opulent embrace for your ears, ensuring an unrivaled fit and exquisite audio experience."
+      description:
+        "Our uniquely engineered ear tips are cocooned in plush silicone, delivering an opulent embrace for your ears, ensuring an unrivaled fit and exquisite audio experience.",
     },
     {
       heading: "Rubberized Cables",
-      description: "Experience the unparalleled freedom of movement with our flexible rubber cables that promise durability without compromise."
+      description:
+        "Experience the unparalleled freedom of movement with our flexible rubber cables that promise durability without compromise.",
     },
     {
       heading: "Enhanced Comfort Sensors",
-      description: "A touch of magic in the form of built-in microphones and sensors empowers your earbuds to obey your every command, making your audio journey seamless and enchanting."
+      description:
+        "A touch of magic in the form of built-in microphones and sensors empowers your earbuds to obey your every command, making your audio journey seamless and enchanting.",
     },
     {
       heading: "Artistic Mesh Guard",
-      description: "Shielded by artful mesh screens, our speakers remain untarnished, keeping your listening experience pristine."
-    }
+      description:
+        "Shielded by artful mesh screens, our speakers remain untarnished, keeping your listening experience pristine.",
+    },
   ];
 
   //functions
   function loadInfoBoxes() {
-
     //make AJAX call here
+    fetch("https://swiftpixel.com/earbud/api/infoboxes")
+      .then((response) => response.json())
+      .then((infoBoxes) => {
+        console.log(infoBoxes);
 
-    fetch("https://swiftpixel.com/earbud/api/infoboxes") 
-    .then(response => response.json()) 
-    .then(infoBoxes => {
-      console.log(infoBoxes);
+        infoBoxes.forEach((infoBox, index) => {
+          let selected = document.querySelector(`#hotspot-${index + 1}`);
 
-      infoBoxes.forEach((infoBox, index) => {
-      let selected = document.querySelector(`#hotspot-${index + 1}`);
+          const titleElement = document.createElement("h2");
+          titleElement.textContent = infoBox.heading;
 
-      const titleElement = document.createElement('h2');
-      titleElement.textContent = infoBox.heading;
+          const textElement = document.createElement("p");
+          textElement.textContent = infoBox.description;
 
-      const textElement = document.createElement('p');
-      textElement.textContent = infoBox.description;
-
-      selected.appendChild(titleElement);
-      selected.appendChild(textElement);
-    });
-
-    }) 
-    .catch(error => {
-       console.log(error);
-    });
-
-    
+          selected.appendChild(titleElement);
+          selected.appendChild(textElement);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   loadInfoBoxes();
 
   function loadMaterialInfo() {
+    const loader = document.querySelector("#loader");
+    const errorMessage = document.querySelector("#error-message");
 
-    //add loader in html, write the code to show it here
+    //Show loader and hide error.
+    loader.style.display = "block";
+    errorMessage.style.display = "none";
 
-    //make AJAX Call here
+    fetch("https://swiftpixel.com/earbud/api/materials")
+      .then((response) => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();
+      })
+      .then((materials) => {
+        materialList.innerHTML = ""; // Clear the list before it becomes popular.
 
-    //this is the api url https://swiftpixel.com/earbud/api/materials"
+        materials.forEach((material) => {
+          const clone = materialTemplate.content.cloneNode(true);
 
-    materialListData.forEach(material => {
-      //clone the template li with h3 and p inside
-      const clone = materialTemplate.content.cloneNode(true);
+          const materialHeading = clone.querySelector(".material-heading");
+          materialHeading.textContent = material.heading;
 
-      // now we are goingo to populate the cloned template
-      const materailHeading = clone.querySelector(".material-heading");
-      materailHeading.textContent = material.heading;
+          const materialDescription = clone.querySelector(
+            ".material-description"
+          );
+          materialDescription.textContent = material.description;
 
-      const materialDescription = clone.querySelector(".material-description");
-      materialDescription.textContent = material.description;
-
-      //Hide the loader
-
-      //append the populated template to the list
-
-      materialList.appendChild(clone);
-    })
+          materialList.appendChild(clone);
+        });
+      })
+      .catch((error) => {
+        console.error("Failed to load materials:", error);
+        errorMessage.style.display = "block";
+      })
+      .finally(() => {
+        loader.style.display = "none";
+      });
   }
-  
+
   loadMaterialInfo();
 
   function showInfo() {
@@ -108,11 +112,8 @@
   }
 
   //Event listeners
-
   hotspots.forEach(function (hotspot) {
     hotspot.addEventListener("mouseenter", showInfo);
     hotspot.addEventListener("mouseleave", hideInfo);
   });
-
 })();
-

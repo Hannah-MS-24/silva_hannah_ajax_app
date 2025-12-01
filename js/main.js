@@ -8,6 +8,7 @@
   const materialError = document.querySelector("#material-error");
   const infoboxError = document.querySelector("#infobox-error");
 
+  // Static material data (used if API not available)
   const materialListData = [
     {
       heading: "Precision-Crafted Polymers",
@@ -45,20 +46,19 @@
 
           const annotation = hotspot.querySelector(".HotspotAnnotation");
 
-         
+          // Clear old content
+          annotation.innerHTML = "";
+
+          // Create elements
           const titleElement = document.createElement('h2');
           titleElement.textContent = infoBox.heading;
 
           const textElement = document.createElement('p');
           textElement.textContent = infoBox.description;
 
+          // Append to annotation
           annotation.appendChild(titleElement);
           annotation.appendChild(textElement);
-
-          if (window.innerWidth >= 768) {
-            annotation.style.visibility = "visible";
-            annotation.style.opacity = "1";
-          }
         });
       })
       .catch(() => {
@@ -80,21 +80,28 @@
 
         materials.forEach(material => {
           const clone = materialTemplate.content.cloneNode(true);
-
           clone.querySelector(".material-heading").textContent = material.heading;
           clone.querySelector(".material-description").textContent = material.description;
-
           materialList.appendChild(clone);
         });
 
         materialList.classList.remove("hidden");
       })
       .catch(() => {
+        // Fallback to static data
+        materialList.innerHTML = "";
+        materialListData.forEach(material => {
+          const clone = materialTemplate.content.cloneNode(true);
+          clone.querySelector(".material-heading").textContent = material.heading;
+          clone.querySelector(".material-description").textContent = material.description;
+          materialList.appendChild(clone);
+        });
         materialError.classList.remove("hidden");
       })
       .finally(() => hideLoader());
   }
 
+  // Show/hide loader
   function showLoader() {
     materialLoader.classList.remove("hidden");
     materialList.classList.add("hidden");
@@ -105,7 +112,7 @@
     materialLoader.classList.add("hidden");
   }
 
-
+  // HOTSPOT ANNOTATION ANIMATION
   function showInfo() {
     const annotation = this.querySelector(".HotspotAnnotation");
     gsap.to(annotation, { autoAlpha: 1, duration: 0.4 });
@@ -116,6 +123,7 @@
     gsap.to(annotation, { autoAlpha: 0, duration: 0.4 });
   }
 
+  // Attach hover events
   hotspots.forEach(h => {
     h.addEventListener("mouseenter", showInfo);
     h.addEventListener("mouseleave", hideInfo);

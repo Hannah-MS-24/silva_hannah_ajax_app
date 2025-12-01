@@ -23,6 +23,9 @@ p {
   font-size: 16px;
 }
 
+/* --------------------------------------------------------------
+    MODEL-VIEWER
+-------------------------------------------------------------- */
 model-viewer {
   width: auto;
   max-width: 1200px;
@@ -31,9 +34,17 @@ model-viewer {
   margin: 0 auto;
 }
 
+model-viewer::part(default-progress-bar) {
+  height: 30px;
+  background-color: #E89B36;
+}
+
+/* --------------------------------------------------------------
+    HOTSPOTS
+-------------------------------------------------------------- */
 .Hotspot {
   background: url(../images/hotspot.svg) center no-repeat;
-  border: 0px;
+  border: 0;
   width: 45px;
   height: 38px;
   transition: all 1s ease-in-out;
@@ -45,6 +56,9 @@ model-viewer {
   pointer-events: none;
 }
 
+/* --------------------------------------------------------------
+    HOTSPOT ANNOTATION
+-------------------------------------------------------------- */
 .HotspotAnnotation {
   visibility: hidden;
   background: #fff;
@@ -61,6 +75,7 @@ model-viewer {
   padding: 0.5em 1em;
   position: absolute;
   top: 50%;
+  width: -moz-max-content;
   width: max-content;
   text-align: left;
 }
@@ -80,11 +95,9 @@ model-viewer {
   max-width: 250px;
 }
 
-model-viewer::part(default-progress-bar) {
-  height: 30px;
-  background-color: #E89B36;
-}
-
+/* --------------------------------------------------------------
+    ANIMATIONS (Default)
+-------------------------------------------------------------- */
 @keyframes circle {
   from {
     transform: translateX(-50%) rotate(0deg) translateX(50px) rotate(0deg);
@@ -101,6 +114,38 @@ model-viewer::part(default-progress-bar) {
     transform: translateX(-100px);
   }
 }
+/* --------------------------------------------------------------
+    LOADER (ADDON REQUIRED BY ASSIGNMENT)
+-------------------------------------------------------------- */
+#loader {
+  width: 60px;
+  height: 60px;
+  margin: 30px auto;
+  border-radius: 50%;
+  border: 6px solid #ccc;
+  border-top-color: #45a3ff;
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+#error-message {
+  display: none;
+  text-align: center;
+  margin-top: 20px;
+  color: red;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------
+    MEDIA QUERIES
+-------------------------------------------------------------- */
+/* TABLET AND ABOVE */
 @media screen and (min-width: 768px) {
   .Hotspot {
     display: block;

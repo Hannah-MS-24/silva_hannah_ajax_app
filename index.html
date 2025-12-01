@@ -19,8 +19,11 @@
   <body>
     <div class="grid-con">
 
-      <!-- MODEL VIEWER -->
+      <!-- MODEL VIEWER + IMAGEM ESTÁTICA -->
       <div class="col-span-full">
+        <!-- Static image for mobile -->
+        <img src="images/poster-2.png" alt="Earbuds Static" class="model-static" />
+
         <model-viewer
           id="model"
           src="model/earbuds.gltf"
@@ -50,7 +53,7 @@
         </model-viewer>
       </div>
 
-  
+      <!-- MATERIAL SECTION -->
       <div class="col-span-full">
         <h2>Material</h2>
 
@@ -59,9 +62,7 @@
 
         <p id="error-message">Failed to load materials.</p>
 
-        <ul id="material-list">
-       
-        </ul>
+        <ul id="material-list"></ul>
 
         <template id="material-template">
           <li>

@@ -28,13 +28,7 @@ body {
   }
 }
 
-/* MODEL VIEWER SECTION */
-#model-section {
-  display: none !important;
-  width: 100%;
-  margin-top: 20px;
-}
-
+/* MODEL VIEWER */
 model-viewer {
   width: auto;
   max-width: 1200px;
